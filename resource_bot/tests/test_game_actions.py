@@ -1,17 +1,27 @@
+import unittest
+from unittest.mock import patch
 from app.game_actions import exit_city, search_resources_interface
-import time
-import random
+
+
+class TestGameActions(unittest.TestCase):
+    @patch("app.game_actions.exit_city")
+    def test_exit_city(self, mock_exit_city):
+        mock_exit_city.return_value = None
+        try:
+            exit_city()
+        except RuntimeError as e:
+            self.fail(f"exit_city() raised RuntimeError unexpectedly: {e}")
+
+    @patch("app.game_actions.search_resources_interface")
+    def test_search_resources_interface(self, mock_search_resources_interface):
+        mock_search_resources_interface.return_value = None
+        try:
+            search_resources_interface()
+        except RuntimeError as e:
+            self.fail(
+                f"search_resources_interface() raised RuntimeError unexpectedly: {e}"
+            )
+
 
 if __name__ == "__main__":
-    try:
-        print("Testing exit_city()...")
-        exit_city()
-        print("Exit city action executed successfully.")
-
-        time.sleep(random.uniform(1, 3))
-
-        print("Testing search_resources_interface()...")
-        search_resources_interface()
-        print("Search resources action executed successfully.")
-    except RuntimeError as e:
-        print(f"Error: {e}")
+    unittest.main()
